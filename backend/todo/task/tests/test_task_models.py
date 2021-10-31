@@ -24,3 +24,12 @@ class TaskModelTest(TestCase):
             message = f'{item} not found'
             with self.subTest():
                 self.assertTrue(hasattr(self.model, item), msg=message)
+
+    def test_task_exists(self):
+        '''
+        Task should exists
+        '''
+        task = {'name': 'Buy some snacks',
+                'date': '2021-10-31', 'status': 'False'}
+        Tasks.objects.create(**task)
+        self.assertTrue(Tasks.objects.exists())
