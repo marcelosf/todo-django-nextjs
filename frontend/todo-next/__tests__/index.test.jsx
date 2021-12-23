@@ -17,4 +17,14 @@ describe("Home", () => {
 
     expect(heading).toBeInTheDocument();
   });
+
+  it("renders accordion list", () => {
+    render(<Home />);
+
+    const accordions = screen.getAllByRole("accordion");
+
+    accordions.map((accordion) => {
+      expect(accordion).toBeInTheDocument();
+    });
+  });
 });
