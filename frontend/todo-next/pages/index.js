@@ -1,10 +1,24 @@
 import Layout from "../components/layouts/layout";
 import TaskList from "../components/TaskList";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 
 export default function Home({ tasks }) {
   return (
     <Layout>
-      <h1>Todo List</h1>
+      <Box>
+        <Grid container alignItems="center">
+          <Grid item md={6}>
+            <h1>Todo List</h1>
+          </Grid>
+          <Grid item md={6}>
+            <Button sx={{ float: "right" }} variant="contained">
+              Add new task
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
       <TaskList tasks={tasks}></TaskList>
     </Layout>
   );
@@ -12,11 +26,17 @@ export default function Home({ tasks }) {
 
 export async function getStaticProps(context) {
   const endpoint = process.env.TODO_API_BASE_URL;
-  const tasks = [];
 
   try {
     const response = await fetch(endpoint + "task");
-    tasks = await response.json();
+    const tasks = await response.json();
+
+    return {
+      props: {
+        tasks,
+      },
+      revalidate: 10,
+    };
   } catch (e) {
     return {
       props: {
@@ -24,11 +44,4 @@ export async function getStaticProps(context) {
       },
     };
   }
-
-  return {
-    props: {
-      tasks,
-    },
-    revalidate: 10,
-  };
 }

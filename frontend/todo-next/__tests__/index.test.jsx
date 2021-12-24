@@ -33,4 +33,12 @@ describe("Home", () => {
       expect(accordion).toBeInTheDocument();
     });
   });
+
+  it("renders add task button", () => {
+    render(<Home tasks={tasks} />);
+
+    const addButtonText = screen.getByText(/Add new task/);
+
+    expect(addButtonText).toBeInTheDocument();
+  });
 });
