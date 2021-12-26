@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Home from "../pages/index";
 
 describe("Home", () => {
@@ -40,5 +40,19 @@ describe("Home", () => {
     const addButtonText = screen.getByText(/Add new task/);
 
     expect(addButtonText).toBeInTheDocument();
+  });
+
+  it("renders modal form fields", () => {
+    render(<Home tasks={tasks} />);
+
+    const formFields = ["Name", "Date", "Status"];
+
+    fireEvent.click(screen.getByText(/Add new task/));
+
+    formFields.map((label) => {
+      let formField = screen.getByLabelText(label);
+
+      expect(formField).toBeInTheDocument();
+    });
   });
 });
