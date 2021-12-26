@@ -3,6 +3,7 @@ import TaskList from "../components/TaskList";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import ModalForm from "../components/ModalForm";
 
 export default function Home({ tasks }) {
   return (
@@ -13,9 +14,7 @@ export default function Home({ tasks }) {
             <h1>Todo List</h1>
           </Grid>
           <Grid item md={6}>
-            <Button sx={{ float: "right" }} variant="contained">
-              Add new task
-            </Button>
+            <ModalForm />
           </Grid>
         </Grid>
       </Box>
