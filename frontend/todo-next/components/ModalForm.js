@@ -7,6 +7,11 @@ import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import DatePicker from "@mui/lab/DatePicker";
+import AdapterMoment from "@mui/lab/AdapterMoment";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 const modalStyle = {
   position: "absolute",
@@ -20,6 +25,7 @@ export default function ModalForm() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [date, setDate] = React.useState(null);
 
   return (
     <div>
@@ -35,8 +41,17 @@ export default function ModalForm() {
               sx={{ "& .MuiTextField-root": { mb: 3, width: "100%" } }}
             >
               <TextField label="Name" variant="outlined" />
-              <TextField label="Date" variant="outlined" />
-              <TextField label="Status" variant="outlined" />
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DatePicker
+                  label="Date"
+                  value={date}
+                  onChange={(newDate) => {
+                    setDate(newDate);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+              <FormControlLabel control={<Checkbox />} label="Done" />
             </Box>
           </CardContent>
           <CardActions>

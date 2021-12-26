@@ -45,7 +45,7 @@ describe("Home", () => {
   it("renders modal form fields", () => {
     render(<Home tasks={tasks} />);
 
-    const formFields = ["Name", "Date", "Status"];
+    const formFields = ["Name", "Date", "Done"];
 
     fireEvent.click(screen.getByText(/Add new task/));
 
