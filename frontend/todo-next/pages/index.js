@@ -1,6 +1,5 @@
 import Layout from "../components/layouts/layout";
 import TaskList from "../components/TaskList";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import ModalForm from "../components/ModalForm";
@@ -24,23 +23,15 @@ export default function Home({ tasks }) {
 }
 
 export async function getStaticProps(context) {
-  const endpoint = process.env.TODO_API_BASE_URL;
+  const api = process.env.NEXT_PUBLIC_URL + "/api/tasks";
 
-  try {
-    const response = await fetch(endpoint + "task");
-    const tasks = await response.json();
+  const response = await fetch(api);
+  const tasks = await response.json();
 
-    return {
-      props: {
-        tasks,
-      },
-      revalidate: 10,
-    };
-  } catch (e) {
-    return {
-      props: {
-        tasks: [],
-      },
-    };
-  }
+  return {
+    props: {
+      tasks,
+    },
+    revalidate: 10,
+  };
 }
