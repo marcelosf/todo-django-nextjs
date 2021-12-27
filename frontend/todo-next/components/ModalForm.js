@@ -13,14 +13,7 @@ import DatePicker from "@mui/lab/DatePicker";
 import AdapterMoment from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import moment from "moment";
-
-const modalStyle = {
-  position: "absolute",
-  top: "30%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  boxShadow: 24,
-};
+import { modalStyle } from "./styles.js";
 
 export default function ModalForm() {
   const [name, setName] = React.useState("");
