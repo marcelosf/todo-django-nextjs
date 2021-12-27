@@ -11,4 +11,21 @@ export default async function handler(request, response) {
       response.status(200).json({ tasks: [] });
     }
   }
+
+  if (request.method === "POST") {
+    try {
+      const body = JSON.stringify(request.body);
+      const resp = await fetch(endpoint + "task/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: body,
+      });
+
+      const task = await resp.json();
+
+      response.status(200).json(task);
+    } catch (e) {
+      response.status(400).json(e);
+    }
+  }
 }
