@@ -49,6 +49,12 @@ export default function ModalForm() {
     return moment(dateObj).format("YYYY-MM-DD");
   };
 
+  const clearForm = () => {
+    setName("");
+    setDate(null);
+    setDone(false);
+  };
+
   const validateForm = (status) => {
     if (status === 400) {
       validateName(true);
@@ -58,6 +64,9 @@ export default function ModalForm() {
 
     if (status === 201) {
       handleSnackOpen("Task was created successfuly!!");
+      validateDate(false);
+      validateName(false);
+      clearForm();
     }
   };
 
