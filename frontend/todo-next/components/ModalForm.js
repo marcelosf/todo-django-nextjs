@@ -12,6 +12,9 @@ import Checkbox from "@mui/material/Checkbox";
 import DatePicker from "@mui/lab/DatePicker";
 import AdapterMoment from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import moment from "moment";
 import { modalStyle } from "./styles.js";
 
@@ -19,14 +22,44 @@ export default function ModalForm() {
   const [name, setName] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [done, setDone] = React.useState(false);
+  const [nameValidation, validateName] = React.useState(false);
+  const [dateValidation, validateDate] = React.useState(false);
+  const [date, setDate] = React.useState(null);
+  const [snackOpen, setSnackOpen] = React.useState({
+    message: "",
+    open: false,
+  });
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [date, setDate] = React.useState(null);
+  const handleSnackOpen = (message) =>
+    setSnackOpen({
+      message: message,
+      open: true,
+    });
 
-  function getFormattedDate() {
+  const handleSnackClose = () =>
+    setSnackOpen({
+      message: "",
+      open: false,
+    });
+
+  const getFormattedDate = () => {
     const dateObj = new Date(date);
     return moment(dateObj).format("YYYY-MM-DD");
-  }
+  };
+
+  const validateForm = (status) => {
+    if (status === 400) {
+      validateName(true);
+      validateDate(true);
+      handleSnackOpen("Both name and date fields are mandatory");
+    }
+
+    if (status === 201) {
+      handleSnackOpen("Task was created successfuly!!");
+    }
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -43,17 +76,40 @@ export default function ModalForm() {
         headers: { "Content-Type": "application/json" },
         body: data,
       });
-      console.log(response);
+
+      validateForm(response.status);
     } catch (e) {
       console.log(e);
     }
   }
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleSnackClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <div>
       <Button sx={{ float: "right" }} variant="contained" onClick={handleOpen}>
         Add new task
       </Button>
+
+      <Snackbar
+        open={snackOpen.open}
+        autoHideDuration={6000}
+        onClose={handleSnackClose}
+        message={snackOpen.message}
+        action={action}
+      />
+
       <Modal open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit}>
           <Card sx={modalStyle}>
@@ -64,6 +120,9 @@ export default function ModalForm() {
                 sx={{ "& .MuiTextField-root": { mb: 3, width: "100%" } }}
               >
                 <TextField
+                  required
+                  error={nameValidation}
+                  onBlur={(e) => validateName(!(e.target.value.length > 0))}
                   label="Name"
                   variant="outlined"
                   value={name}
@@ -76,7 +135,16 @@ export default function ModalForm() {
                     onChange={(newDate) => {
                       setDate(newDate);
                     }}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params) => (
+                      <TextField
+                        required
+                        {...params}
+                        error={dateValidation}
+                        onBlur={(e) => {
+                          validateDate(!(e.target.value.length > 0));
+                        }}
+                      />
+                    )}
                   />
                 </LocalizationProvider>
                 <FormControlLabel
