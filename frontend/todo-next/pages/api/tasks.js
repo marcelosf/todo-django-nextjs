@@ -22,8 +22,9 @@ export default async function handler(request, response) {
       });
 
       const task = await resp.json();
+      const status = await resp.status;
 
-      response.status(200).json(task);
+      response.status(status).json(task);
     } catch (e) {
       response.status(400).json(e);
     }
