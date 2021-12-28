@@ -79,7 +79,7 @@ export default function ModalForm() {
 
       validateForm(response.status);
     } catch (e) {
-      console.log(e);
+      handleSnackOpen(e);
     }
   }
 
